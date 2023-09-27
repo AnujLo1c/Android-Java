@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/text1"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="left"
+    android:textAlignment="gravity"
+    android:paddingLeft="20sp"
+    android:paddingTop="10sp"
+    android:paddingRight="5sp"
+    android:shadowColor="@color/defaultbutton"
+android:shadowRadius="2"
+android:textSize="20sp"
+android:textStyle="bold|normal"
+android:minHeight="50dp"
+    android:elevation="10sp"
+    android:background="@drawable/shape_listitem"
+    />

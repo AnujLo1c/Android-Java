@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.OrganizeIt" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="floatingActionButtonStyle">@style/FloatingActionbarstyle</item>
+    </style>
+
+    <style name="Theme.OrganizeIt" parent="Base.Theme.OrganizeIt" />
+    <style name="FloatingActionbarstyle" parent="Widget.Design.FloatingActionButton" >
+        <item name="shapeAppearanceOverlay">@style/Fabshape1</item>
+
+    </style>
+    <style name="Fabshape1" parent="ShapeAppearance.Material3.SmallComponent" >
+        <item name="cornerSize">50%</item>
+        <item name="fabCustomSize">100dp</item>
+
+    </style>
+
+    
+</resources>

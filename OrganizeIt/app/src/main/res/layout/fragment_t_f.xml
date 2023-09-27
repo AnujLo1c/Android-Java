@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".t_f">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ListView
+        android:id="@+id/t_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_above="@id/temp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:dividerHeight="10.0sp"
+        android:divider="@color/white"
+        android:paddingBottom="20sp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/float_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:backgroundTint="#000000"
+        android:src="@drawable/add"
+
+        android:contentDescription="adding elements to list"
+        app:fabCustomSize="56dp"
+        app:maxImageSize="40dp"
+        app:layout_anchorGravity="bottom|end" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:layout_below="@id/float_t"
+        android:id="@+id/temp"></TextView>
+
+
+</RelativeLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+android:id="@+id/rootll"
+    tools:context=".Content_page">
+
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="60dp"
+    android:id="@+id/backll"
+    android:background="@color/black"
+
+    >
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:background="@color/black"
+        android:id="@+id/backarrow"
+        android:contentDescription="back key"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/course_name"
+        android:layout_weight="1"
+        android:textAlignment="gravity"
+        android:textColor="@color/white"
+        android:gravity="left|center"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:textSize="18sp"
+        android:textStyle="bold|normal"
+
+        />
+
+    <androidx.constraintlayout.utils.widget.ImageFilterButton
+        android:layout_width="48dp"
+        android:layout_height="60dp"
+android:background="@color/black"
+        android:src="@drawable/add"
+        android:id="@+id/add_content"
+        android:contentDescription="add content button"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollview"
+        >
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+android:orientation="vertical"
+    android:id="@+id/listVisible"
+    android:layout_margin="10dp"
+    tools:ignore="InvalidId">
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="hellow everyone"/>-->
+<!--    <View-->
+<!--        android:layout_height="2dp"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:background="#000000" />-->
+</androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

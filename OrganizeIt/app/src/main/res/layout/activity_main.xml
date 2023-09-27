@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".MainActivity">
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/black"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_marginTop="5sp"
+        android:text="III Year/ V Sem"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_marginTop="10sp"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/theory"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Theory"
+            android:textSize="16sp"
+            android:textStyle="bold|normal"
+            android:background="@drawable/buttonlayout"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/practical"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold|normal"
+            android:background="@drawable/buttonlayout"
+            android:text="Practical"
+            android:textSize="16sp"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/assignment"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Assignment"
+            android:background="@drawable/buttonlayout"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+    </LinearLayout>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fl"
+    />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
