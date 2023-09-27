@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/ll"
+    android:background="@color/white"
+    tools:context=".MainActivity">
+
+  <EditText
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ems="12"
+      android:id="@+id/weigth"
+      android:hint="@string/h_w"
+      android:inputType="number"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:id="@+id/height"
+        android:hint="@string/h_hf"
+        android:inputType="number"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:id="@+id/heighti"
+        android:hint="@string/h_hi"
+        android:inputType="number"/>
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+    android:text="Click"
+    android:id="@+id/button" />
+   <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+    android:text="Result"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    android:id="@+id/output"
+    android:layout_marginTop="20dp"/>
+
+</LinearLayout>
