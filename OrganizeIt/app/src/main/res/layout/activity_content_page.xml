@@ -53,6 +53,12 @@ android:background="@color/black"
         />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+android:contentDescription="scrollbar"
+        >
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -70,5 +76,5 @@ android:orientation="vertical"
 <!--        android:layout_width="fill_parent"-->
 <!--        android:background="#000000" />-->
 </androidx.appcompat.widget.LinearLayoutCompat>
-
+    </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -2,12 +2,12 @@ package com.example.organizeit;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.app.ActivityManager;
+//import android.app.ActivityManager;
 import android.content.Context;
-import android.content.ContextWrapper;
+//import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+//import android.database.Cursor;
 import android.graphics.Bitmap;
 //import android.os.Build;
 import android.net.Uri;
@@ -16,9 +16,11 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
+//import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
+import androidx.documentfile.provider.DocumentFile;
 
 //import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,18 +34,21 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+//import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 //import java.sql.Date;
 //import java.sql.Time;
 import java.io.InputStream;
+//import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
+//import java.util.ArrayList;
 import java.util.Date;
 
 public class bottomDrawarFragment extends BottomSheetDialogFragment {
@@ -51,8 +56,8 @@ public class bottomDrawarFragment extends BottomSheetDialogFragment {
 //    File root;
 Bitmap image;
 Date date;
-SimpleDateFormat dateFormat;
-public File dir,theoryfolder;
+SimpleDateFormat dateFormat,dateFormat2;
+public File pdir,dir,theoryfolder;
 //    String dataToSend;
 
     public interface OnDismissListener {
@@ -61,16 +66,16 @@ public File dir,theoryfolder;
 
     private OnDismissListener onDismissListener;
     @Override
-    public void onAttach( Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             onDismissListener = (OnDismissListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnDismissListener");
+            throw new ClassCastException(context + " must implement OnDismissListener");
         }
     }
     @Override
-    public void onDismiss(DialogInterface dialog) {
+    public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         if (onDismissListener != null) {
             // Pass data to the hosting activity
@@ -92,7 +97,8 @@ ActivityResultLauncher<Intent> imageCapture=registerForActivityResult(new Activi
         new ActivityResultCallback<ActivityResult>() {
     @Override
     public void onActivityResult(ActivityResult result) {
-            Log.d("camera output", "Image file generated1" );
+//            Log.d("camera output", "Image file generated1" );
+//        System.out.println("hii22");
         if(result.getResultCode()==RESULT_OK && result.getData()!=null){
         Intent out=result.getData();
         image= (Bitmap) out.getExtras().get("data");
@@ -112,57 +118,52 @@ ActivityResultLauncher<Intent> imageCapture=registerForActivityResult(new Activi
 
     }
 });
-ActivityResultLauncher<Intent> fileFetch=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-    @Override
-    public void onActivityResult(ActivityResult result) {
-        if(result.getResultCode()==RESULT_OK && result.getData()!=null){
-            if (result != null) {
-                // Check the data type
+ActivityResultLauncher<Intent> fileFetch=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+    if(result.getResultCode()==RESULT_OK && result.getData()!=null){
 
-                String dataType = result.getData().resolveType(getContext().getContentResolver());
-                Log.d("asdf", "onActivityResult: "+dataType+dataType.endsWith("wordprocessingml.document"));
-                Intent data=result.getData();
-                if (dataType != null) {
-                    if (dataType.endsWith("jpeg") || dataType.endsWith("png")||dataType.endsWith("jpg")) {
-                        // It's an image
+
+
+            String dataType = result.getData().resolveType(getContext().getContentResolver());
+            Log.d("asdf", "onActivityResult: "+dataType+dataType.endsWith("wordprocessingml.document"));
+            Intent data=result.getData();
+            if (dataType != null) {
+                if (dataType.endsWith("jpeg") || dataType.endsWith("png")||dataType.endsWith("jpg")) {
+                    // It's an image
 //                        System.out.println("here");
 
 //                        image=(Bitmap) out.getExtras().get("data");
-                        if (data != null && data.getData() != null) {
-                            Uri selectedImageUri = data.getData();
-                            try {
-                                // Copy the selected image to internal storage
-                                saveImageToInternalStorage(selectedImageUri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getContext(), "Error saving image", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-
-                     else if (dataType.endsWith("pdf")) {
-//                        Log.d("fileType", "onActivityResult: pdf");
-                        if (data != null && data.getData() != null) {
+                    if (data != null && data.getData() != null) {
                         Uri selectedImageUri = data.getData();
+                        try {
                             // Copy the selected image to internal storage
-                            savePdfToInternalStorage(selectedImageUri);
+                            saveImageToInternalStorage(selectedImageUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "Error saving image", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                }
 
-                }
-//                    cp.recreate();
+                 else if (dataType.endsWith("pdf")) {
+//                        Log.d("fileType", "onActivityResult: pdf");
+                    if (data != null && data.getData() != null) {
+                    Uri selectedImageUri = data.getData();
+
+//                            Log.d("pdfcheck", "dksaljf"+data.getExtras().get("name"));
+                        // Copy the selected image to internal storage
+                        savePdfToInternalStorage(selectedImageUri);
                     }
-                else {
-                        Toast.makeText(getContext(), "File format : jpeg,png,pdf,doc", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
-                        Log.d("fileType", "onActivityResult: failed to fetch");
-                    Toast.makeText(getContext(), "falied to fetch file", Toast.LENGTH_SHORT).show();
+
             }
-    }
+//                    cp.recreate();
+                }
+            else {
+                    Toast.makeText(getContext(), "File format : jpeg,png,pdf,doc", Toast.LENGTH_SHORT).show();
+                }
 
-    dismiss();
-    }
+}
+
+dismiss();
 });
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -171,26 +172,39 @@ ActivityResultLauncher<Intent> fileFetch=registerForActivityResult(new ActivityR
         View v=inflater.inflate(R.layout.fragment_bottom_drawar, container, false);
          camera=v.findViewById(R.id.imageView);
          files=v.findViewById(R.id.files);
+        date=new Date();date.getTime();
 theoryfolder=new File(getActivity().getFilesDir(),"Theory");
-
-      dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+      dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
 
         if(!theoryfolder.exists()){
     theoryfolder.mkdir();
 }
 
-         dir=new File(theoryfolder,"Theory_"+getArguments().getString("name"));
-        //onclick
+        pdir=new File(theoryfolder,"Theory_"+getArguments().getString("name"));
+        if(!pdir.exists()){
+            pdir.mkdir();
+        }
+         dir=new File(pdir,dateFormat2.format(date));
         if(!dir.exists()){
             dir.mkdir();
         }
+        //onclick
+
 
         camera.setOnClickListener(v1 -> {
+
+//            for(File f:dir.listFiles()) {
+//                Log.d("asdfasdf", "onCreateView: " + f.getName());
+//            }
+            //        System.out.println(s);
+//        System.out.println("hii");
             Intent cam=new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
 //                startActivity(cam);
             imageCapture.launch(cam);
         });
         files.setOnClickListener(v12 -> {
+        System.out.println("hii2");
             Intent file=new Intent(Intent.ACTION_GET_CONTENT);
             file.setType("*/*"); // Set the MIME type or use "application/*" for all file types
             file.addCategory(Intent.CATEGORY_OPENABLE);
@@ -198,8 +212,9 @@ theoryfolder=new File(getActivity().getFilesDir(),"Theory");
         });
         return v;
     }
+
     public void saveImage(Bitmap image){
-        date=new Date();date.getTime();
+
         File pictureFile;
 //        dir=new File(getActivity().getFilesDir(),"Images");
 
@@ -256,15 +271,11 @@ theoryfolder=new File(getActivity().getFilesDir(),"Theory");
 
     private void savePdfToInternalStorage(Uri pdfUri) {
         try {
+//            Log.d("pdfcheck", "dksaljf2"+DocumentFile.fromSingleUri(getContext(),pdfUri).getName());
             InputStream inputStream = getActivity().getContentResolver().openInputStream(pdfUri);
-            // The name you want for the saved PDF file
-//            File directory = new File(dir, "PDFs");
 
-//            if (!directory.exists()) {
-//                directory.mkdir(); // Create the directory if it doesn't exist
-//            }
-
-            File pdfFile = new File(dir, dateFormat.format(new Date().getTime())+".pdf");
+            File pdfFile = new File(dir, dateFormat.format(DocumentFile.fromSingleUri(getContext(),pdfUri).getName()));
+//            File pdfFile = new File(dir, dateFormat.format(new Date().getTime())+"."+DocumentFile.fromSingleUri(getContext(),pdfUri).getName());
             OutputStream outputStream = new FileOutputStream(pdfFile);
             byte[] buffer = new byte[1024];
             int read;
