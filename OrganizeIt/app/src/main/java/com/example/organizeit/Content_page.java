@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 //import android.graphics.drawable.Drawable;
@@ -55,98 +56,95 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 //import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 //import java.util.SimpleTimeZone;
 
 public class Content_page extends AppCompatActivity implements bottomDrawarFragment.OnDismissListener {
-//    ImageView image;
-ImageFilterButton back,add;
-TextView name;
-Bundle b;
-File datefolder,dateDetails,mainf;
-SimpleDateFormat dateFormat,dateFormat2;
-FileInputStream fis;
-//public List<Item> items;;
-//datewise dy-cre
-RecyclerView recyclerView;
+    // ImageView image;
+    ImageFilterButton back, add;
+    TextView name;
+    Bundle b;
+    File datefolder, dateDetails, mainf;
+    SimpleDateFormat dateFormat, dateFormat2;
+    FileInputStream fis;
+    // public List<Item> items;;
+    // datewise dy-cre
+    RecyclerView recyclerView;
     TextView textView;
     View view;
-//    CustomAdapter adapterRv;
-   public ArrayList<URI> imageItems = new ArrayList<java.net.URI>();
-   public ArrayList<String> pdfItems = new ArrayList<>();
+    // CustomAdapter adapterRv;
+    MyListAdapter listad;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_page);
-//adapterRv.notifyDataSetChanged();
+        // adapterRv.notifyDataSetChanged();
         back = findViewById(R.id.backarrow);
         add = findViewById(R.id.add_content);
         name = findViewById(R.id.course_name);
 
-        //bundle passing
+        // bundle passing
         b = getIntent().getExtras();
         name.setText(b.getString("name"));
 
-        //dynamic creation
+        // dynamic creation
 
-        LinearLayoutCompat ll=findViewById(R.id.listVisible);
-ll.setPadding(0,40,0,20);
-       ll.setOrientation(LinearLayoutCompat.VERTICAL);
+        LinearLayoutCompat ll = findViewById(R.id.listVisible);
+        ll.setPadding(0, 40, 0, 20);
+        ll.setOrientation(LinearLayoutCompat.VERTICAL);
 
-
-//        //store date
-        Date date = new Date();date.getTime();
-  dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-  dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
-////        String prevdate= dateFormat.format(date);
-         mainf=new File(getFilesDir(),"Theory");
-        if(!mainf.exists()){
+        // //store date
+        Date date = new Date();
+        date.getTime();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+        //// String prevdate= dateFormat.format(date);
+        mainf = new File(getFilesDir(), "Theory");
+        if (!mainf.exists()) {
             mainf.mkdir();
         }
-        datefolder=new File(mainf,"Dates");
-        if(!datefolder.exists()){
+        datefolder = new File(mainf, "Dates");
+        if (!datefolder.exists()) {
             datefolder.mkdir();
         }
         //
-           dateDetails=new File(datefolder,b.getString("name")+"_dates.txt");
+        dateDetails = new File(datefolder, b.getString("name") + "_dates.txt");
         try {
-            if(!dateDetails.exists()){
+            if (!dateDetails.exists()) {
                 dateDetails.createNewFile();
-                write(dateFormat2.format(date),dateDetails);
+                write(dateFormat2.format(date), dateDetails);
             }
             String existingDates = read(dateDetails);
 
             String currentDateFormatted = dateFormat2.format(date);
             if (!existingDates.contains(currentDateFormatted)) {
                 // Append the current date to the existing dates
-//                existingDates += currentDateFormatted + "#";
+                // existingDates += currentDateFormatted + "#";
 
                 // Write the updated dates back to the file
                 write(currentDateFormatted, dateDetails);
             }
-//        System.out.println(read(dateDetails));
-//            Log.d("System.out", "onCreate:w date fiel failed");
+            // System.out.println(read(dateDetails));
+            // Log.d("System.out", "onCreate:w date fiel failed");
 
         } catch (IOException e) {
             Log.d("System.out", "onCreate: date fiel failed");
-//            Toast.makeText(this, "Date file creation failed", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Date file creation failed", Toast.LENGTH_SHORT).show();
         }
 
-//System.out.println("hello");
-     //datewise dy-cre
+        // System.out.println("hello");
+        // datewise dy-cre
         try {
             subframes_create(ll);
         } catch (IOException e) {
             Toast.makeText(this, "Date fetching error", Toast.LENGTH_SHORT).show();
-        }
-        catch(ParseException p){
+        } catch (ParseException p) {
             Toast.makeText(this, "String parsing failed", Toast.LENGTH_SHORT).show();
         }
 
         back.setOnClickListener(v -> Content_page.super.onBackPressed());
         add.setOnClickListener(v -> {
-            bottomDrawarFragment b1 =new bottomDrawarFragment();
+            bottomDrawarFragment b1 = new bottomDrawarFragment();
             b1.setArguments(b);
 
             b1.show(getSupportFragmentManager(), b1.getTag());
@@ -154,136 +152,168 @@ ll.setPadding(0,40,0,20);
     }
 
     private void subframes_create(LinearLayoutCompat ll) throws IOException, ParseException {
-//    String s = read(dateDetails);
+        // String s = read(dateDetails);
 
-    String s=read(dateDetails);
-    String[] dates = s.split("#");
+        String s = read(dateDetails);
+        String[] dates = s.split("#");
 
-    for (String date : dates) {
-        // Date Header TextView
-        TextView textView = new TextView(this);
-        float factor = getResources().getDisplayMetrics().density;
-        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setText(date);
-        textView.setTextSize(16);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setTextColor(Color.BLACK);
-        textView.setPadding(760,0,0,0);
-        ll.addView(textView);
+        for (String date : dates) {
+            // Date Header TextView
+            TextView textView = new TextView(this);
+            float factor = getResources().getDisplayMetrics().density;
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView.setText(date);
+            textView.setTextSize(16);
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setTextColor(Color.BLACK);
+            textView.setPadding(760, 0, 0, 0);
+            ll.addView(textView);
 
-        // Divider View
-        View dividerView = new View(this);
-        dividerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) factor * 2));
-        dividerView.setBackground(getDrawable(R.drawable.b_color));
-        ll.addView(dividerView);
+            // Divider View
+            View dividerView = new View(this);
+            dividerView
+                    .setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) factor * 2));
+            dividerView.setBackground(getDrawable(R.drawable.b_color));
+            ll.addView(dividerView);
 
-        // RecyclerView
-//        RecyclerView recyclerView = new RecyclerView(this);
-//        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-////        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        recyclerView.setLayoutManager(null);
+            // RecyclerView
+            // RecyclerView recyclerView = new RecyclerView(this);
+            // recyclerView.setLayoutParams(new
+            // ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            // ViewGroup.LayoutParams.WRAP_CONTENT));
+            //// LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+            // LinearLayoutManager.VERTICAL, false);
+            // recyclerView.setLayoutManager(null);
 
-        // Set up the adapter for the RecyclerView
-//        files_Fetch(dateDetails,date);
-       imageItems.clear();
-       pdfItems.clear();
+            // Set up the adapter for the RecyclerView
+            // files_Fetch(dateDetails,date);
 
-//        imageItems.add( "anujaa.pdf");
-//        imageItems.add( "anujaa.pdf");
-//        imageItems.add( "anujaa.pdf");
-//        imageItems.add( "anujaa.pdf");
-//        imageItems.add( "anujaa.pdf");
-//        imageItems.add( "anujaa.pdf");
-//        pdfItems.add("nanuj lwoasnhsid.jpg");
-//        pdfItems.add("n1.jpg");
-//        pdfItems.add("n2.jpg");
-        files_Fetch(date);
-//        System.out.println(imageItems.size());
-//        System.out.println(pdfItems.size());
-        GridLayout gridLayout = new GridLayout(this);
-        gridLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        gridLayout.setColumnCount(5);
 
-        int rowCount = (imageItems.size() % 4 == 0) ? imageItems.size() / 4 : (imageItems.size() / 4) + 1;
-        gridLayout.setRowCount(rowCount);
-gridLayout.setPadding(0,10,0,0);
-        for (int i = 0; i < imageItems.size(); i++) {
-            ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
-            imageView.setImageURI(Uri.parse(imageItems.get(i).toString()));
-//            imageView.autofill();
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            gridLayout.addView(imageView);
-        }
-        NonScrollListView listView=new NonScrollListView(this);
-        listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-        MyListAdapter listad=new MyListAdapter(this,pdfItems);
-        listView.setDivider(null);
-        listView.setDividerHeight(0);
-listView.setScrollContainer(false);
+            // imageItems.add( "anujaa.pdf");
+            // imageItems.add( "anujaa.pdf");
+            // imageItems.add( "anujaa.pdf");
+            // imageItems.add( "anujaa.pdf");
+            // imageItems.add( "anujaa.pdf");
+            // imageItems.add( "anujaa.pdf");
+            // pdfItems.add("nanuj lwoasnhsid.jpg");
+            // pdfItems.add("n1.jpg");
+            // pdfItems.add("n2.jpg");
 
-        listView.setAdapter(listad);
-        listView.setPadding(0,0,0,10);
-//         adapterRv = new CustomAdapter(this, imageItems, pdfItems);
+//            listad.notifyDataSetChanged();
+            // System.out.println(imageItems.size());
+//            System.out.println(pdfItems.size());
 
-//        recyclerView.setAdapter(adapterRv);
-        ll.addView(gridLayout);
-        ll.addView(listView);
+            //files fetch
+            File ff = new File(mainf, "Theory_" + b.getString("name"));
+            File f = new File(ff, date);
+            ArrayList<URI> imageItems = new ArrayList<java.net.URI>();
+            ArrayList<String> pdfItems = new ArrayList<>();
+            if (f.exists() && f.isDirectory()) {
+                // List all files in the directory
+                File[] files = f.listFiles();
 
-    }
-}
-
-    public void files_Fetch(String date) throws ParseException {
-System.out.println(date);
-        File ff = new File(mainf, "Theory_" + b.getString("name"));
-//        System.out.println(ff.listFiles());
-File f=new File(ff,date);
-        if (f.exists() && f.isDirectory()) {
-            // List all files in the directory
-            File[] files = f.listFiles();
-
-            for (File file : files) {
-                if (file.isFile()) {
-                    String fileName = file.getName();
-                    if (fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".jpeg")) {
-                        imageItems.add(file.toURI());
-                    } else if (fileName.endsWith(".pdf")) {
-                        pdfItems.add(fileName);
+                for (File file : files) {
+                    if (file.isFile()) {
+                        String fileName = file.getName();
+//         System.out.println(fileName);
+                        if (fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".jpeg")) {
+                            imageItems.add(file.toURI());
+                        } else if (fileName.endsWith(".pdf")) {
+                            pdfItems.add(fileName);
+                        }
                     }
                 }
+            } else {
+                System.out.println("The directory does not exist.");
             }
-        } else {
-            System.out.println("The directory does not exist.");
-        }
+            GridLayout gridLayout = new GridLayout(this);
+            gridLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            gridLayout.setColumnCount(5);
 
-        // Merge image and PDF items into a single list (if needed)
-        // Depending on your requirements, you can return either imageItems, pdfItems, or allItems
-        // Return allItems to have a single list containing both image and PDF items
+            int rowCount = (imageItems.size() % 4 == 0) ? imageItems.size() / 4 : (imageItems.size() / 4) + 1;
+            gridLayout.setRowCount(rowCount);
+            gridLayout.setPadding(0, 10, 0, 10);
+//            ImageView[] imageView=new ImageView[imageItems.size()];
+
+            for (int i = 0; i < imageItems.size(); i++) {
+//            if(!imageItems.isEmpty()) {
+                Uri uri = Uri.parse(imageItems.get(i).toString());
+
+                ImageView imageView = new ImageView(this);
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+                imageView.setPadding(0, 0, 0, 10);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                // Set the URI as a tag for the ImageView
+                imageView.setTag(uri);
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Retrieve the URI from the ImageView's tag
+                        Uri clickedUri = (Uri) v.getTag();
+                        Intent i=new Intent(getApplicationContext(), Imagef.class);
+i.putExtra("uri",clickedUri.toString());
+startActivity(i);
+
+                    }
+                });
+
+                imageView.setImageURI(uri);
+                gridLayout.addView(imageView);
+            }
+//            }
+            NonScrollListView listView = new NonScrollListView(this);
+            listView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            for(String str:pdfItems){
+                System.out.println(str);
+            }
+           listad = new MyListAdapter(this, pdfItems);
+            listView.setDivider(null);
+            listView.setDividerHeight(0);
+            listView.setScrollContainer(false);
+            // Log.d("pdfcheck", "subframes_create: chekc1");
+            listView.setAdapter(listad);
+
+            listView.setPadding(0, 0, 0, 10);
+            // adapterRv = new CustomAdapter(this, imageItems, pdfItems);
+            // recyclerView.setAdapter(adapterRv);
+            ll.addView(gridLayout);
+            ll.addView(listView);
+        }
+    }
+    public void files_Fetch(String date) throws ParseException {
+//        System.out.println(date);
 
     }
 
-    public  String read(File t_f) throws IOException {
-         fis = new FileInputStream(t_f);
+    public String read(File t_f) throws IOException {
+        fis = new FileInputStream(t_f);
         InputStreamReader isr = new InputStreamReader(fis);
         BufferedReader br = new BufferedReader(isr);
 
         return br.readLine();
     }
-    public  void write(String s, File theorydates) throws IOException {
-        String a =read(theorydates);
-//        a.append(s + "#");
-//        if(a.toString().isEmpty()){
-//            a.append(s)
-//        }
+
+    public void write(String s, File theorydates) throws IOException {
+        String a = read(theorydates);
+        // a.append(s + "#");
+        // if(a.toString().isEmpty()){
+        // a.append(s)
+        // }
         FileOutputStream fos = new FileOutputStream(theorydates);
         OutputStreamWriter osw = new OutputStreamWriter(fos);
         BufferedWriter bw = new BufferedWriter(osw);
-        Log.d("hellostring", "write: "+s+" "+a);
-        if(a==null){
-            bw.write(s+"#");
-        }else{
-            a+=(s+"#");
-        bw.write(a.toString());}
+        Log.d("hellostring", "write: " + s + " " + a);
+        if (a == null) {
+            bw.write(s + "#");
+        } else {
+            a += (s + "#");
+            bw.write(a.toString());
+        }
         bw.flush();
         bw.close();
     }
@@ -293,91 +323,98 @@ File f=new File(ff,date);
         recreate();
     }
 }
+
 //
-//class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+// class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //
-//    private List<Item> imageItems;
-//    private List<Item> pdfItems;
-//    private Context context;
+// private List<Item> imageItems;
+// private List<Item> pdfItems;
+// private Context context;
 //
-//    private static final int VIEW_TYPE_IMAGE = 1;
-//    private static final int VIEW_TYPE_PDF = 2;
+// private static final int VIEW_TYPE_IMAGE = 1;
+// private static final int VIEW_TYPE_PDF = 2;
 //
-//    public CustomAdapter(Context context, List<Item> imageItems, List<Item> pdfItems) {
-//        this.context = context;
-//        this.imageItems = imageItems;
-//        this.pdfItems = pdfItems;
-//    }
-//    @Override
-//    public int getItemViewType(int position) {
-//        // Determine the item view type based on position
-//        if (position < imageItems.size()) {
-//            return VIEW_TYPE_IMAGE;
-//        } else {
-//            return VIEW_TYPE_PDF;
-//        }
-//    }
-//    @NonNull
-//    @Override
-//    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        LayoutInflater inflater = LayoutInflater.from(context);
+// public CustomAdapter(Context context, List<Item> imageItems, List<Item>
+// pdfItems) {
+// this.context = context;
+// this.imageItems = imageItems;
+// this.pdfItems = pdfItems;
+// }
+// @Override
+// public int getItemViewType(int position) {
+// // Determine the item view type based on position
+// if (position < imageItems.size()) {
+// return VIEW_TYPE_IMAGE;
+// } else {
+// return VIEW_TYPE_PDF;
+// }
+// }
+// @NonNull
+// @Override
+// public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+// int viewType) {
+// LayoutInflater inflater = LayoutInflater.from(context);
 //
-//        if (viewType == VIEW_TYPE_IMAGE) {
-//            // Create a horizontal item view for images
-//            View itemView = inflater.inflate(R.layout.horizontal_item_layout, parent, false);
-//            return new ImageViewHolder(itemView);
-//        } else {
-//            // Create a vertical item view for PDFs
-//            View itemView = inflater.inflate(R.layout.vertical_item_layout, parent, false);
-//            return new PdfViewHolder(itemView);
-//        }
-//    }
+// if (viewType == VIEW_TYPE_IMAGE) {
+// // Create a horizontal item view for images
+// View itemView = inflater.inflate(R.layout.horizontal_item_layout, parent,
+// false);
+// return new ImageViewHolder(itemView);
+// } else {
+// // Create a vertical item view for PDFs
+// View itemView = inflater.inflate(R.layout.vertical_item_layout, parent,
+// false);
+// return new PdfViewHolder(itemView);
+// }
+// }
 //
-//    @Override
-//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//        if (holder instanceof ImageViewHolder) {
-//            // Bind image item data to the horizontal item view
-//            ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
-//            Item currentItem = imageItems.get(position);
-//            imageViewHolder.iconImageView.setImageResource(currentItem.getIconResource());
-//            imageViewHolder.textView.setText(currentItem.getText());
-//        } else if (holder instanceof PdfViewHolder) {
-//            // Bind PDF item data to the vertical item view
-//            PdfViewHolder pdfViewHolder = (PdfViewHolder) holder;
-//            Item currentItem = pdfItems.get(position - imageItems.size()); // Adjust position
-//            pdfViewHolder.iconImageView.setImageResource(currentItem.getIconResource());
-//            pdfViewHolder.textView.setText(currentItem.getText());
-//        }
-//    }
+// @Override
+// public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int
+// position) {
+// if (holder instanceof ImageViewHolder) {
+// // Bind image item data to the horizontal item view
+// ImageViewHolder imageViewHolder = (ImageViewHolder) holder;
+// Item currentItem = imageItems.get(position);
+// imageViewHolder.iconImageView.setImageResource(currentItem.getIconResource());
+// imageViewHolder.textView.setText(currentItem.getText());
+// } else if (holder instanceof PdfViewHolder) {
+// // Bind PDF item data to the vertical item view
+// PdfViewHolder pdfViewHolder = (PdfViewHolder) holder;
+// Item currentItem = pdfItems.get(position - imageItems.size()); // Adjust
+// position
+// pdfViewHolder.iconImageView.setImageResource(currentItem.getIconResource());
+// pdfViewHolder.textView.setText(currentItem.getText());
+// }
+// }
 //
-//    @Override
-//    public int getItemCount() {
-//        // Total item count is the sum of image and PDF items
-//        return imageItems.size() + pdfItems.size();
-//    }
+// @Override
+// public int getItemCount() {
+// // Total item count is the sum of image and PDF items
+// return imageItems.size() + pdfItems.size();
+// }
 //
-//    public class ImageViewHolder extends RecyclerView.ViewHolder {
-//        ImageView iconImageView;
-//        TextView textView;
+// public class ImageViewHolder extends RecyclerView.ViewHolder {
+// ImageView iconImageView;
+// TextView textView;
 //
-//        public ImageViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            iconImageView = itemView.findViewById(R.id.iconImageView);
-//            textView = itemView.findViewById(R.id.textView);
-//        }
-//    }
+// public ImageViewHolder(@NonNull View itemView) {
+// super(itemView);
+// iconImageView = itemView.findViewById(R.id.iconImageView);
+// textView = itemView.findViewById(R.id.textView);
+// }
+// }
 //
-//    public class PdfViewHolder extends RecyclerView.ViewHolder {
-//        ImageView iconImageView;
-//        TextView textView;
+// public class PdfViewHolder extends RecyclerView.ViewHolder {
+// ImageView iconImageView;
+// TextView textView;
 //
-//        public PdfViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            iconImageView = itemView.findViewById(R.id.iconImageView);
-//            textView = itemView.findViewById(R.id.textView);
-//        }
-//    }
-//}
+// public PdfViewHolder(@NonNull View itemView) {
+// super(itemView);
+// iconImageView = itemView.findViewById(R.id.iconImageView);
+// textView = itemView.findViewById(R.id.textView);
+// }
+// }
+// }
 class Item {
     private int iconResource;
     private String text;
@@ -396,13 +433,13 @@ class Item {
     }
 }
 
- class MyListAdapter extends ArrayAdapter<String> {
+class MyListAdapter extends ArrayAdapter<String> {
 
     private final Context context;
     private final ArrayList<String> al;
 
     public MyListAdapter(Activity context, ArrayList<String> arrayList) {
-        super(context, R.layout.pdflist,arrayList);
+        super(context, R.layout.pdflist, arrayList);
         this.context = context;
         this.al = arrayList;
     }
@@ -419,17 +456,21 @@ class Item {
         return rowView;
     }
 }
- class NonScrollListView extends ListView {
+
+class NonScrollListView extends ListView {
 
     public NonScrollListView(Context context) {
         super(context);
     }
+
     public NonScrollListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public NonScrollListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(

@@ -57,7 +57,7 @@ public class bottomDrawarFragment extends BottomSheetDialogFragment {
 Bitmap image;
 Date date;
 SimpleDateFormat dateFormat,dateFormat2;
-public File pdir,dir,theoryfolder;
+public File pdir,dir,theoryfolder, destinationFile;
 //    String dataToSend;
 
     public interface OnDismissListener {
@@ -245,7 +245,7 @@ theoryfolder=new File(getActivity().getFilesDir(),"Theory");
 //                internalStorageDir.mkdir(); // Create the directory if it doesn't exist
 //            }
             Date dateTime=new Date();dateTime.getTime();
-             File destinationFile = new File(dir, dateFormat.format(dateTime)+".jpg");
+             destinationFile = new File(dir, dateFormat.format(dateTime)+".jpg");
 
             // Open an output stream to the destination file
             OutputStream outputStream = new FileOutputStream(destinationFile);
@@ -274,7 +274,7 @@ theoryfolder=new File(getActivity().getFilesDir(),"Theory");
 //            Log.d("pdfcheck", "dksaljf2"+DocumentFile.fromSingleUri(getContext(),pdfUri).getName());
             InputStream inputStream = getActivity().getContentResolver().openInputStream(pdfUri);
 
-            File pdfFile = new File(dir, dateFormat.format(DocumentFile.fromSingleUri(getContext(),pdfUri).getName()));
+            File pdfFile = new File( destinationFile, DocumentFile.fromSingleUri(getContext(),pdfUri).getName());
 //            File pdfFile = new File(dir, dateFormat.format(new Date().getTime())+"."+DocumentFile.fromSingleUri(getContext(),pdfUri).getName());
             OutputStream outputStream = new FileOutputStream(pdfFile);
             byte[] buffer = new byte[1024];
