@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 //import android.widget.ArrayAdapter;
 //import android.widget.ImageView;
 //import android.widget.LinearLayout;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -66,15 +67,7 @@ public class Content_page extends AppCompatActivity implements bottomDrawarFragm
     File datefolder, dateDetails, mainf;
     SimpleDateFormat dateFormat, dateFormat2;
     FileInputStream fis;
-    // public List<Item> items;;
-    // datewise dy-cre
-    RecyclerView recyclerView;
-    TextView textView;
-    View view;
-    // CustomAdapter adapterRv;
     MyListAdapter listad;
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_page);
@@ -107,7 +100,6 @@ public class Content_page extends AppCompatActivity implements bottomDrawarFragm
         if (!datefolder.exists()) {
             datefolder.mkdir();
         }
-        //
         dateDetails = new File(datefolder, b.getString("name") + "_dates.txt");
         try {
             if (!dateDetails.exists()) {
@@ -124,15 +116,13 @@ public class Content_page extends AppCompatActivity implements bottomDrawarFragm
                 // Write the updated dates back to the file
                 write(currentDateFormatted, dateDetails);
             }
-            // System.out.println(read(dateDetails));
-            // Log.d("System.out", "onCreate:w date fiel failed");
 
         } catch (IOException e) {
             Log.d("System.out", "onCreate: date fiel failed");
             // Toast.makeText(this, "Date file creation failed", Toast.LENGTH_SHORT).show();
         }
 
-        // System.out.println("hello");
+
         // datewise dy-cre
         try {
             subframes_create(ll);
@@ -209,6 +199,7 @@ public class Content_page extends AppCompatActivity implements bottomDrawarFragm
             File f = new File(ff, date);
             ArrayList<URI> imageItems = new ArrayList<java.net.URI>();
             ArrayList<String> pdfItems = new ArrayList<>();
+            ArrayList<String> pdfItemsuris = new ArrayList<>();
             if (f.exists() && f.isDirectory()) {
                 // List all files in the directory
                 File[] files = f.listFiles();
@@ -221,6 +212,8 @@ public class Content_page extends AppCompatActivity implements bottomDrawarFragm
                             imageItems.add(file.toURI());
                         } else if (fileName.endsWith(".pdf")) {
                             pdfItems.add(fileName);
+                            pdfItemsuris.add(String.valueOf(file.toURI()));
+
                         }
                     }
                 }
@@ -275,20 +268,23 @@ startActivity(i);
             listView.setDivider(null);
             listView.setDividerHeight(0);
             listView.setScrollContainer(false);
-            // Log.d("pdfcheck", "subframes_create: chekc1");
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Uri pdfUri = Uri.parse(pdfItemsuris.get(i)); // Replace with your PDF file path
+                    Intent pi=new Intent(getApplicationContext(), PdfViewer.class);
+                    System.out.println(pdfUri+"10");
+                    pi.putExtra("puri",pdfUri.toString());
+                    startActivity(pi);
+                }
+            });
             listView.setAdapter(listad);
-
             listView.setPadding(0, 0, 0, 10);
-            // adapterRv = new CustomAdapter(this, imageItems, pdfItems);
-            // recyclerView.setAdapter(adapterRv);
             ll.addView(gridLayout);
             ll.addView(listView);
         }
     }
-    public void files_Fetch(String date) throws ParseException {
-//        System.out.println(date);
 
-    }
 
     public String read(File t_f) throws IOException {
         fis = new FileInputStream(t_f);
@@ -322,6 +318,8 @@ startActivity(i);
     public void onDismiss() {
         recreate();
     }
+
+
 }
 
 //

@@ -15,7 +15,8 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         android:minSdkVersion="30" />
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"
+    <uses-permission
+        android:name="android.permission.WRITE_APN_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -29,6 +30,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OrganizeIt"
         tools:targetApi="31">
+        <activity
+            android:name=".PdfViewer"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.organizeit.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".Imagef"
             android:exported="false" />

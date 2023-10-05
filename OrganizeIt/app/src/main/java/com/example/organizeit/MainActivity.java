@@ -1,7 +1,10 @@
 package com.example.organizeit;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,7 +14,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.MediaRouter;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +24,6 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
         theory=findViewById(R.id.theory);
         practical=findViewById(R.id.practical);
         assignment=findViewById(R.id.assignment);
-
         {
-
             //setting-up default fragment or start-up fragment
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             theory.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white,null)));
             theory.setTextColor(ColorStateList.valueOf(getResources().getColor(R.color.black,null)));
             ft.commit();
-
 
             //button click
             //theory
